@@ -36,7 +36,7 @@ public class ShowSpeed extends EasyGraphics {
 
 		int N = gpspoints.length-1; // number of data points
 		
-		makeWindow("Speed profile", 2*MARGIN + 2 * N, 2 * MARGIN + BARHEIGHT);
+		makeWindow("Speed profile", 2*MARGIN + 3 * N, 2 * MARGIN + BARHEIGHT);
 		
 		showSpeedProfile(MARGIN + BARHEIGHT,N);
 	}
@@ -46,10 +46,38 @@ public class ShowSpeed extends EasyGraphics {
 		System.out.println("Angi tidsskalering i tegnevinduet ...");
 		int timescaling = Integer.parseInt(getText("Tidsskalering"));
 				
-		// TODO - START
+		double[] speeds = gpscomputer.speeds();
 		
-		throw new UnsupportedOperationException(TODO.method());
-	
-		// TODO - SLUTT
+		int j = 0;
+		
+		setColor(0, 0,255);
+		for(int i = 0; i < gpspoints.length-1; i++) {
+			/*
+			int xStart = MARGIN + (2*i);
+			int yStart = ybase;
+			int xSlutt = xStart;
+			int ySlutt = ybase - ((int)(speeds[i]));
+			
+			if(ySlutt < 0) {
+				ySlutt = 0;
+			}
+			
+			drawLine(xStart,yStart,xSlutt,ySlutt);
+			*/
+			GPSPoint gpsi = gpspoints[i];
+			GPSPoint gpsi2 = gpspoints[i+1];
+			double endY = GPSUtils.speed(gpsi, gpsi2);
+			int endy = ybase - (int)endY;
+			drawLine(i+MARGIN+ j ,ybase,i+MARGIN+ j, endy);
+			j += 2;
+			
+		}
+		setColor(0,255,0);
+		int gjHoyde = ybase - ((int)(gpscomputer.maxSpeed())/2);
+		
+		int xStart = 0;
+		int xSlutt = speeds.length + (speeds.length * 5);
+		
+		drawLine(xStart,gjHoyde,xSlutt,gjHoyde);
 	}
 }
